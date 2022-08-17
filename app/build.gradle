@@ -5,6 +5,9 @@ plugins {
     id 'com.google.dagger.hilt.android'
 }
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
 android {
     compileSdk 33
 
@@ -33,8 +36,8 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField 'String', 'MarvelPublicKey', MARVEL_PUB_KEY
-            buildConfigField 'String', 'MarvelPrivateKey', MARVEL_PRIV_KEY
+            buildConfigField 'String', 'MarvelPublicKey', localProperties.getProperty("MARVEL_PUB_KEY")
+            buildConfigField 'String', 'MarvelPrivateKey', localProperties.getProperty("MARVEL_PRIV_KEY")
         }
         release {
             minifyEnabled false

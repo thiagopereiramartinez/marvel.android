@@ -12,6 +12,6 @@ class CharactersViewModel @Inject constructor(
     private val charactersRepository: CharactersRepository
 ) : ViewModel() {
 
-    fun getCharacters() = charactersRepository.getCharacters().flow.cachedIn(viewModelScope)
+    fun getCharacters() = charactersRepository.getCharacters().cachedIn(viewModelScope)
 
 }
