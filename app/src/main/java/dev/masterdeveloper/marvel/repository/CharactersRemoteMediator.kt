@@ -16,10 +16,14 @@ import javax.inject.Inject
 @OptIn(ExperimentalPagingApi::class)
 class CharactersRemoteMediator @Inject constructor(
     private val database: Database,
-    private val dao: CharactersDao,
-    private val remoteKeyDao: RemoteKeyDao,
     private val service: CharactersService
 ) : RemoteMediator<Int, Character>() {
+
+    private val dao: CharactersDao
+        get() = database.charactersDao()
+
+    private val remoteKeyDao: RemoteKeyDao
+        get() = database.remoteKeysDao()
 
     override suspend fun load(
         loadType: LoadType,
