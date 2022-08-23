@@ -1,24 +1,22 @@
 package dev.masterdeveloper.marvel.remote
 
-import dev.masterdeveloper.marvel.BuildConfig
-import dev.masterdeveloper.marvel.util.md5
-import okhttp3.*
-import java.util.*
+import dev.masterdeveloper.marvel.util.marvelHash
+import okhttp3.Interceptor
+import okhttp3.Response
 
 class AuthenticationInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
-        val ts = Calendar.getInstance().timeInMillis.toString()
+        val auth by marvelHash()
 
-        val hash = "${ts}${BuildConfig.MarvelPrivateKey}${BuildConfig.MarvelPublicKey}".md5()
         val url = chain
             .request()
             .url
             .newBuilder()
-            .addQueryParameter("apikey", BuildConfig.MarvelPublicKey)
-            .addQueryParameter("ts", ts)
-            .addQueryParameter("hash", hash)
+            .addQueryParameter("apikey", auth.pubKey)
+            .addQueryParameter("ts", auth.ts)
+            .addQueryParameter("hash", auth.hash)
             .build()
 
         return chain.proceed(chain.request().newBuilder().url(url).build())

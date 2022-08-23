@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="Theme.Marvel" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.Marvel.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="postSplashScreenTheme">@style/Theme.Marvel</item>
+    </style>
+
 </resources>

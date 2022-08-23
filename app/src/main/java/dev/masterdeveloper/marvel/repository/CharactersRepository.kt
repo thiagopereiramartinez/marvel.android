@@ -13,7 +13,7 @@ class CharactersRepository @Inject constructor(
 
     @OptIn(ExperimentalPagingApi::class)
     fun getCharacters() = Pager(
-        config = PagingConfig(pageSize = 50),
+        config = PagingConfig(pageSize = 10),
         remoteMediator = mediator
     ) {
         dao.getAllCharacters()

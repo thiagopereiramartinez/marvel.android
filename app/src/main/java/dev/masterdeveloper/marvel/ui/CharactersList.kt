@@ -1,45 +1,35 @@
 package dev.masterdeveloper.marvel.ui
 
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Text
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import dev.masterdeveloper.marvel.model.Character
-import dev.masterdeveloper.marvel.ui.theme.MarvelTheme
 
 @Composable
 fun CharactersList(list: LazyPagingItems<Character>) {
-    LazyColumn {
+
+    val context = LocalContext.current
+
+    LazyRow(
+        contentPadding = PaddingValues(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         items(list) { character ->
             character ?: return@items
 
-            Text(character.name)
+            CharacterItem(character = character) {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(character.urls.first().url)
+                }
+                context.startActivity(intent)
+            }
         }
-    }
-}
-
-@Preview
-@Composable
-fun CharactersList_Preview() {
-    MarvelTheme {
-        /*CharactersList((0..10).map { i ->
-            Character(
-                id = "",
-                name = "Hero #$i",
-                description = "Description of Hero #$i",
-                modified = "",
-                thumbnail = Character.Thumbnail(
-                    path = "http://i.annihil.us/u/prod/marvel/i/mg/c/e0/535fecbbb9784",
-                    extension = "jpg"
-                ),
-                resourceURI = "",
-                urls = listOf(Character.Url(
-                    url = "",
-                    type = ""
-                ))
-            )
-        })*/
     }
 }
