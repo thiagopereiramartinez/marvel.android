@@ -6,8 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import dev.masterdeveloper.marvel.ui.CharacterDetails
 import dev.masterdeveloper.marvel.ui.CharactersList
 import dev.masterdeveloper.marvel.ui.theme.MarvelTheme
 import dev.masterdeveloper.marvel.viewmodel.CharactersViewModel
@@ -32,9 +35,16 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ContentView(viewModel: CharactersViewModel) {
+    
+    val navController = rememberNavController()
 
-    val characters = viewModel.getCharacters().collectAsLazyPagingItems()
-
-    CharactersList(list = characters)
+    NavHost(navController = navController, startDestination = "characters") {
+        composable("characters") {
+            CharactersList(navController, viewModel)
+        }
+        composable("details/{characterId}") { backStackEntry ->
+            CharacterDetails(navController, viewModel, backStackEntry.arguments?.getString("characterId") ?: return@composable)
+        }
+    }
     
 }

@@ -1,21 +1,19 @@
 package dev.masterdeveloper.marvel.ui
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.paging.compose.LazyPagingItems
+import androidx.navigation.NavController
+import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import dev.masterdeveloper.marvel.model.Character
+import dev.masterdeveloper.marvel.viewmodel.CharactersViewModel
 
 @Composable
-fun CharactersList(list: LazyPagingItems<Character>) {
+fun CharactersList(navController: NavController, viewModel: CharactersViewModel) {
 
-    val context = LocalContext.current
+    val list = viewModel.getCharacters().collectAsLazyPagingItems()
 
     LazyRow(
         contentPadding = PaddingValues(16.dp),
@@ -25,10 +23,7 @@ fun CharactersList(list: LazyPagingItems<Character>) {
             character ?: return@items
 
             CharacterItem(character = character) {
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse(character.urls.first().url)
-                }
-                context.startActivity(intent)
+                navController.navigate("details/${character.id}")
             }
         }
     }

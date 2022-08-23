@@ -34,12 +34,7 @@ fun CharacterItem(character: Character, onClick: () -> Unit = { }) {
     when (imagePainter.state) {
         is AsyncImagePainter.State.Loading -> isLoading = true
         is AsyncImagePainter.State.Success -> isLoading = false
-        is AsyncImagePainter.State.Error -> {
-            containsErrors = true
-            (imagePainter.state as AsyncImagePainter.State.Error).result.let {
-                println(it)
-            }
-        }
+        is AsyncImagePainter.State.Error -> containsErrors = true
         else -> {}
     }
 

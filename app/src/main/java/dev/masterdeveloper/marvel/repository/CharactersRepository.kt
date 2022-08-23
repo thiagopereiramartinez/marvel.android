@@ -19,4 +19,6 @@ class CharactersRepository @Inject constructor(
         dao.getAllCharacters()
     }.flow
 
+    suspend fun getCharacter(id: String) = dao.getCharacter(id)
+
 }

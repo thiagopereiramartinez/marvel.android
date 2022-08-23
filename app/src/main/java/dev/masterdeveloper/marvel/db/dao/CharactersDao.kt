@@ -19,6 +19,11 @@ interface CharactersDao {
     fun getAllCharacters(): PagingSource<Int, Character>
 
     @Query("""
+        SELECT * FROM characters WHERE id = :id
+    """)
+    suspend fun getCharacter(id: String): Character
+
+    @Query("""
         DELETE FROM characters
     """)
     suspend fun clearAll()
